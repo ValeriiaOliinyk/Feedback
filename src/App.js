@@ -1,8 +1,13 @@
 // Base
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 // Components
-import FeedBack from "./components/FeedBack";
+import Container from "./components/Container";
+import FeedbackOptions from "./components/FeedbackOptions";
+import Statistics from "./components/Statistics";
+import Section from "./components/Section";
+import Notificaion from "./components/Notification";
 
 class App extends Component {
   static defaultProps = {
@@ -11,35 +16,27 @@ class App extends Component {
     bad: 0,
   };
 
+  static propTypes = {
+    good: PropTypes.number,
+    neutral: PropTypes.number,
+    bad: PropTypes.number,
+  };
+
   state = {
     good: this.props.good,
     neutral: this.props.neutral,
     bad: this.props.bad,
   };
 
-  handelIncrementGood = () => {
-    this.setState((prevState) => ({
-      good: prevState.good + 1,
-    }));
-    this.countTotalFeedback();
-  };
-
-  handelIncrementNeutural = () => {
-    this.setState((prevState) => ({
-      neutral: prevState.neutral + 1,
-    }));
-    this.countTotalFeedback();
-  };
-
-  handelIncrementBad = () => {
-    this.setState((prevState) => ({
-      bad: prevState.bad + 1,
-    }));
+  onLeaveFeedback = (e) => {
+    const option = e.currentTarget.name;
+    this.setState((prevState) => ({ [option]: prevState[option] + 1 }));
     this.countTotalFeedback();
   };
 
   countTotalFeedback = () => {
-    let total = this.state.neutral + this.state.bad + this.state.good;
+    const { neutral, bad, good } = this.state;
+    let total = neutral + bad + good;
     return total;
   };
 
@@ -56,18 +53,30 @@ class App extends Component {
   };
 
   render() {
+    const options = Object.keys(this.state);
     const { good, neutral, bad } = this.state;
     return (
-      <FeedBack
-        good={good}
-        neutral={neutral}
-        bad={bad}
-        total={this.countTotalFeedback()}
-        positivePercentage={this.countPositiveFeedbackPercentage()}
-        onGood={this.handelIncrementGood}
-        onNeutural={this.handelIncrementNeutural}
-        onBad={this.handelIncrementBad}
-      />
+      <Container>
+        <Section title="Please live feedback">
+          <FeedbackOptions
+            options={options}
+            onLeaveFeedback={this.onLeaveFeedback}
+          />
+        </Section>
+        <Section title="Statistics">
+          {this.countTotalFeedback() ? (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={this.countTotalFeedback}
+              positivePercentage={this.countPositiveFeedbackPercentage}
+            />
+          ) : (
+            <Notificaion message="No feedback given" />
+          )}
+        </Section>
+      </Container>
     );
   }
 }
