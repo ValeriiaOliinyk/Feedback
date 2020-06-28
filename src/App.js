@@ -1,13 +1,13 @@
 // Base
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // Components
-import Container from "./components/Container";
-import FeedbackOptions from "./components/FeedbackOptions";
-import Statistics from "./components/Statistics";
-import Section from "./components/Section";
-import Notificaion from "./components/Notification";
+import Container from './components/Container';
+import FeedbackOptions from './components/FeedbackOptions';
+import Statistics from './components/Statistics';
+import Section from './components/Section';
+import Notificaion from './components/Notification';
 
 class App extends Component {
   static defaultProps = {
@@ -28,28 +28,23 @@ class App extends Component {
     bad: this.props.bad,
   };
 
-  onLeaveFeedback = (e) => {
+  onLeaveFeedback = e => {
     const option = e.currentTarget.name;
-    this.setState((prevState) => ({ [option]: prevState[option] + 1 }));
+    this.setState(prevState => ({ [option]: prevState[option] + 1 }));
     this.countTotalFeedback();
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    const { good } = this.state;
+    const positiveFeedback = good;
+    const total = this.countTotalFeedback();
+
+    return Math.round((positiveFeedback / total) * 100);
   };
 
   countTotalFeedback = () => {
     const { neutral, bad, good } = this.state;
-    let total = neutral + bad + good;
-    return total;
-  };
-
-  countPositiveFeedbackPercentage = () => {
-    const positiveFeedback = this.state.good;
-    const total = this.countTotalFeedback();
-    if (positiveFeedback) {
-      return Math.round((positiveFeedback / total) * 100);
-    }
-
-    if (!positiveFeedback) {
-      return 0;
-    }
+    return neutral + bad + good;
   };
 
   render() {

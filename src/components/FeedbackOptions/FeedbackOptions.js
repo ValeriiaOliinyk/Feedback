@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { button, box } from "./FeedbackOptions.module.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { button, box } from './FeedbackOptions.module.css';
 
 const FeedbackOptions = ({ options, onLeaveFeedback }) => (
   <div className={box}>
-    {options.map((option) => (
+    {options.map(option => (
       <button
         type="button"
         name={option}
@@ -19,7 +19,7 @@ const FeedbackOptions = ({ options, onLeaveFeedback }) => (
 );
 
 FeedbackOptions.protoTypes = {
-  options: PropTypes.node.isRequired,
+  options: PropTypes.array.isRequired,
   onLeaveFeedback: PropTypes.func.isRequired,
 };
 
