@@ -1,6 +1,5 @@
 // Base
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // Components
 import Container from './components/Container';
@@ -10,22 +9,10 @@ import Section from './components/Section';
 import Notificaion from './components/Notification';
 
 class App extends Component {
-  static defaultProps = {
+  state = {
     good: 0,
     neutral: 0,
     bad: 0,
-  };
-
-  static propTypes = {
-    good: PropTypes.number,
-    neutral: PropTypes.number,
-    bad: PropTypes.number,
-  };
-
-  state = {
-    good: this.props.good,
-    neutral: this.props.neutral,
-    bad: this.props.bad,
   };
 
   onLeaveFeedback = e => {
@@ -36,10 +23,9 @@ class App extends Component {
 
   countPositiveFeedbackPercentage = () => {
     const { good } = this.state;
-    const positiveFeedback = good;
     const total = this.countTotalFeedback();
 
-    return Math.round((positiveFeedback / total) * 100);
+    return Math.round((good / total) * 100);
   };
 
   countTotalFeedback = () => {
